@@ -1,0 +1,28 @@
+<div>
+
+    <p>WE JUST SIGNED AND ITS COOL</p>
+
+<p>{{message}}</p>
+<ul>
+    {{#each signaturelist}}
+    {{#if url}}
+
+    <p>
+        <a href="{{url}}">
+        <span class="names">{{firstname}} {{lastname}}</span></a>
+        <span class="age">{{age}}</span>
+        <a href="/signers/{{city}}">
+        <span class="city">{{ city}}</span></a>
+    </p>
+</ul>
+    {{else}}
+
+    <p>
+        <span class="names">{{firstname}} {{lastname}}</span>
+        <span class="age">{{age}}</span>
+    </p>
+
+    {{/if}}
+    {{/each}}
+</ul>
+</div>
