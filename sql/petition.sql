@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS signatures;
 CREATE TABLE signatures (
     id SERIAL PRIMARY KEY,
     signature_url TEXT,
-    user_id INTEGER NOT NULL UNIQUE 
+    user_id INTEGER NOT NULL UNIQUE
 );
 
 DROP TABLE IF EXISTS users;

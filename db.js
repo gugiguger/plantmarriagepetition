@@ -123,3 +123,37 @@ exports.submitSign = function(signature_url, user_id) {
 
     return db.query(q, params);
 };
+
+exports.mergingTables = function(id) {
+    let q = `SELECT users.firstname, users.lastname, users.email, user_profiles.age, user_profiles.city,user_profiles.url
+    FROM users
+    FULL OUTER JOIN user_profiles
+    ON users.id = user_profiles.user_id WHERE users.id = $1;`;
+    let params = [id];
+    return db
+        .query(q, params)
+        .then(result => {
+            return result.rows;
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
+};
+
+exports.getPasswordUpdate = function(id, firstname, lastname, email, hashedPw) {
+    let q = `UPDATE users SET firstname = $1, lastname = $2, email = $3, password = $4 WHERE id = $5`;
+    let params = [firstname, lastname, email, hashedPw, id];
+    return db.query(q, params);
+};
+
+exports.getUpdatedProfile = function(id, age, city, url) {
+    let q = `INSERT INTO user_profiles (user_id, age, city, url) VALUES ($1, $2, $3, $4) ON CONFLICT (user_id) DO UPDATE SET age = $1, city =$2, url = $3`;
+    let params = [id || null, age || null, city || null, url || null];
+    return db.query(q, params);
+};
+
+exports.getEditedProfile = function(id, firstname, lastname, email) {
+    let q = `UPDATE users SET firstname = $1, lastname = $2, email = $3 WHERE id = $4`;
+    let params = [firstname, lastname, id];
+    return db.query(q, params);
+};

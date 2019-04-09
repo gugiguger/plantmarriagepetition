@@ -86,9 +86,7 @@ function checkIfRegistered(req, res, next) {
 app.get("/login", checkIfRegistered, (req, res) => {
     res.render("login", {
         layout: "main",
-        email: "e-mail address",
-        pw: "password",
-        submit: "Submit"
+        email: "e-mail address"
     });
 });
 
@@ -113,7 +111,7 @@ app.post("/login", (req, res) => {
             req.session.lastname = result.rows[0].lastname;
             req.session.user_id = result.rows[0].user_id;
             req.session.signaturesId = result.rows[0].signatures_id;
-            res.redirect("/petition");
+            res.redirect("/thankyou");
         })
         .catch(err => {
             console.log(err);
@@ -168,7 +166,7 @@ app.post("/petition", (req, res) => {
     let signature = req.body.signature;
     let user_id = req.session.user_id;
     db.submitSign(signature, user_id)
-        .then(results => {
+        .then(() => {
             res.redirect("/thankyou");
         })
         .catch(err => {
@@ -216,7 +214,7 @@ app.get("/signers/:city", checkForRegisteredUsers, (req, res) => {
             });
         })
         .catch(err => {
-            console.log(err.message);
+            console.log(err);
         });
 });
 
@@ -245,6 +243,81 @@ app.get("/thankyou", (req, res) => {
     });
 });
 
+///////////////////////////////////////////////////////////////////
+/////////////////////// UPDATE PROFILE PAGE ////////////////////////////
+///////////////////////////////////////////////////////////////////
+
+app.get("/updateProfiles", checkForRegisteredUsers, (req, res) => {
+    db.mergingTables(req.session.user_id)
+        .then(update => {
+            res.render("updateProfiles", {
+                layout: "main",
+                firstname: "First Name",
+                lastname: "Last Name",
+                update: update[0]
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+});
+
+app.post("/updateProfiles", (req, res) => {
+    if (req.body.password) {
+        db.hashPassword(req.body.password)
+            .then(hash => {
+                Promise.all([
+                    db.getPasswordUpdate(
+                        req.session.user_id,
+                        req.body.firstname,
+                        req.body.lastname,
+                        req.body.email,
+                        hash
+                    ),
+                    db.getUpdatedProfile(
+                        req.session.user_id,
+                        req.body.age,
+                        req.body.city,
+                        req.body.url
+                    )
+                ])
+                    .then(() => {
+                        res.redirect("thankyou");
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    } else {
+        PROMISE.all([
+            db.getEditedProfile(
+                req.session.user_id,
+                req.body.firstname,
+                req.body.lastname,
+                req.body.email
+            ),
+            db
+                .getUpdatedProfile(
+                    req.session.user_id,
+                    req.body.age,
+                    req.body.city,
+                    req.body.url
+                )
+                .catch(err => {
+                    console.log(err);
+                })
+        ])
+            .then(() => {
+                res.redirect("/thankyou");
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+});
 ///////////////////////////////////////////////////////////////////
 /////////////////////// LISTEN TO LOCAL HOST 8080 /////////////////
 ///////////////////////////////////////////////////////////////////
