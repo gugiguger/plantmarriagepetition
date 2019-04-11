@@ -154,6 +154,25 @@ exports.getUpdatedProfile = function(id, age, city, url) {
 
 exports.getEditedProfile = function(id, firstname, lastname, email) {
     let q = `UPDATE users SET firstname = $1, lastname = $2, email = $3 WHERE id = $4`;
-    let params = [firstname, lastname, id];
+    let params = [firstname, lastname, email, id];
     return db.query(q, params);
+};
+
+exports.deleteSignature = function(id) {
+    let q = `DELETE FROM signatures WHERE user_id = $1`;
+    let params = [id || null];
+    return db.query(q, params);
+};
+
+exports.deleteProfile = function(id) {
+    const q1 = `DELETE FROM signatures WHERE user_id = $1`;
+    const q2 = `DELETE FROM user_profiles WHERE id = $1`;
+    const q3 = `DELETE FROM users WHERE id = $1`;
+    const params = [id || null];
+
+    return Promise.all([
+        db.query(q1, params),
+        db.query(q2, params),
+        db.query(q3, params)
+    ]);
 };

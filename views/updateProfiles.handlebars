@@ -1,18 +1,25 @@
 <div class="">
-<h2> CHANGE YOUR PROFILE INFORMATION</h2>
+    <h2 id="updateProfile">Change your profile information here if you like.</h2>
+{{#update}}
+    <form method="post">
+        <div class="inputFields">
+            First Name:<input id="updateFirst" type="text" name="firstname" value="{{firstname}}"/>
+            Last Name:<input id="updateLast" type="text" name="lastname" value="{{lastname}}"/>
+        </div>
+        <div class="inputFields">
+            E-Mail:<input id="updateEmail" type="email" name="email" value="{{email}}"/>
+            Password:<input id="updatePw" type="password" value="" name="password"/>
+        </div>
+        <div class="inputFields">
+            Age:<input id="updateAge" type="text" name="age" value="{{age}}"/>
+            City:<input id="updateCity" type="text" name="city" value="{{city}}"/>
+        </div>
+        <div class="inputFields">
+            Homepage:<input id="updateHomepage" type="text" name="homepage" value="{{homepage}}"/>
+            <button id="updateButton">Update</button>
+        </div>
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    </form>
+{{/update}}
 
-<form id="update" class="" action="index.html" method="post">
-    <div class="inputFields">
-            First Name: <input type="text" name="firstname" value="">
-            Last Name: <input type="text" name="lastname" value="">
-            E-mail: <input type="email" name="email" value="">
-            Password: <input type="password" name="password" value="">
-            Age: <input type="text" name="age" value="">
-            City: <input type="text" name="city" value="">
-            Homepage: <input type="text" name="homepage" value="">
-            <button type="button" name="button">Update</button>
-    </div>
-    <input type="hidden" name="_csrf" value="{{csrfToken}}">
-
-</form>
 </div>

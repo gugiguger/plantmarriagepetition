@@ -6,6 +6,12 @@ const db = require("./db");
 const cookieSession = require("cookie-session");
 // const csurf = require("csurf");
 
+const {
+    checkForRegisteredUsers,
+    checkIfRegistered,
+    registeredProfile
+} = require("./middleware");
+
 // handlebars
 app.engine("handlebars", hb());
 app.set("view engine", "handlebars");
@@ -58,26 +64,18 @@ app.post("/register", (req, res) => {
             hash
         )
             .then(results => {
-                req.session = {};
-                req.session.user = {};
+                // req.session = {};
+                // req.session.user = {};
                 req.session.user_id = results.rows[0].id;
-                req.session.firstname = req.body.firstname;
-                req.session.lastname = req.body.lastname;
-                req.session.user.email = req.body.email;
+                // req.session.firstname = req.body.firstname;
+                // req.session.lastname = req.body.lastname;
+                // req.session.user.email = req.body.email;
 
                 res.redirect("/profile");
             })
-            .catch(err => console.log(err.message));
+            .catch(err => console.log(err));
     });
 });
-
-function checkIfRegistered(req, res, next) {
-    if (req.session.signaturesId) {
-        res.redirect("/thankyou");
-    } else {
-        next();
-    }
-}
 
 ///////////////////////////////////////////////////////////////////
 /////////////////////// LOGIN PAGE ////////////////////////////
@@ -145,28 +143,23 @@ app.post("/profile", (req, res) => {
         });
 });
 
-function registeredProfile(req, res, next) {
-    if (req.session.age || req.session.city || req.session.homepage) {
-        res.redirect("/thankyou");
-    } else {
-        next();
-    }
-}
 ///////////////////////////////////////////////////////////////////
 /////////////////////// PETITION PAGE ////////////////////////////
 ///////////////////////////////////////////////////////////////////
 
-app.get("/petition", (req, res) => {
+app.get("/petition", checkIfRegistered, (req, res) => {
     res.render("petition", {
         layout: "main"
     });
 });
 
 app.post("/petition", (req, res) => {
-    let signature = req.body.signature;
+    let signature_url = req.body.signature;
     let user_id = req.session.user_id;
-    db.submitSign(signature, user_id)
-        .then(() => {
+    db.submitSign(signature_url, user_id)
+        .then(result => {
+            console.log(result);
+            req.session.sigId = result.rows[0].id;
             res.redirect("/thankyou");
         })
         .catch(err => {
@@ -218,13 +211,6 @@ app.get("/signers/:city", checkForRegisteredUsers, (req, res) => {
         });
 });
 
-function checkForRegisteredUsers(req, res, next) {
-    if (!req.session.user_id) {
-        res.redirect("/register");
-    } else {
-        next();
-    }
-}
 ///////////////////////////////////////////////////////////////////
 /////////////////////// THANK YOU PAGE ////////////////////////////
 ///////////////////////////////////////////////////////////////////
@@ -234,7 +220,7 @@ app.get("/thankyou", (req, res) => {
     console.log(req.session.user_id);
     db.getSignatureImg(req.session.user_id).then(results => {
         signImg = results.rows[0].signature_url;
-        console.log(signImg);
+        console.log(results);
         res.render("thankyou", {
             layout: "main",
             message: "Thank you for signing my petition!",
@@ -252,8 +238,6 @@ app.get("/updateProfiles", checkForRegisteredUsers, (req, res) => {
         .then(update => {
             res.render("updateProfiles", {
                 layout: "main",
-                firstname: "First Name",
-                lastname: "Last Name",
                 update: update[0]
             });
         })
@@ -292,7 +276,7 @@ app.post("/updateProfiles", (req, res) => {
                 console.log(err);
             });
     } else {
-        PROMISE.all([
+        Promise.all([
             db.getEditedProfile(
                 req.session.user_id,
                 req.body.firstname,
@@ -307,16 +291,55 @@ app.post("/updateProfiles", (req, res) => {
                     req.body.url
                 )
                 .catch(err => {
-                    console.log(err);
+                    console.log(err, 1);
                 })
         ])
             .then(() => {
                 res.redirect("/thankyou");
             })
             .catch(err => {
-                console.log(err);
+                console.log(err, 2);
             });
     }
+});
+
+///////////////////////////////////////////////////////////////////
+/////////////////////// LOG OUT ///////////////////////////////////
+///////////////////////////////////////////////////////////////////
+
+app.get("/logout", (req, res) => {
+    req.session.destroy;
+    req.session = null;
+    res.redirect("/register");
+});
+
+///////////////////////////////////////////////////////////////////
+/////////////////////// LOG OUT ///////////////////////////////////
+///////////////////////////////////////////////////////////////////
+
+app.get("/deleteSignature", checkForRegisteredUsers, (req, res) => {
+    db.deleteSignature(req.session.user_id)
+        .then(() => {
+            delete req.session.sigId;
+            delete req.body.signature;
+            res.redirect("/petition");
+        })
+        .catch(err => {
+            console.log(err);
+        });
+});
+
+app.get("/deleteProfile", checkForRegisteredUsers, (req, res) => {
+    db.deleteProfile(req.session.user_id)
+        .then(() => {
+            delete req.session.sigId;
+            delete req.body.signature;
+            delete req.session.user_id;
+            res.redirect("/register");
+        })
+        .catch(err => {
+            console.log(err);
+        });
 });
 ///////////////////////////////////////////////////////////////////
 /////////////////////// LISTEN TO LOCAL HOST 8080 /////////////////
