@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const hb = require("express-handlebars");
 const db = require("./db");
 const cookieSession = require("cookie-session");
-// const csurf = require("csurf");
+const csurf = require("csurf");
 
 const {
     checkForRegisteredUsers,
@@ -31,12 +31,12 @@ app.use(
 );
 
 // Security Matter
-// app.use(csurf());
-// app.use(function(req, res, next) {
-//     res.setHeader("x-frame-options", "DENY");
-//     res.locals.csrfToken = req.csrfToken();
-//     next();
-// });
+app.use(csurf());
+app.use(function(req, res, next) {
+    res.setHeader("x-frame-options", "DENY");
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
 
 ///////////////////////////////////////////////////////////////////
 /////////////////////// REDIRECT PAGE TO REGISTRATION ////////////////////////////
@@ -64,13 +64,7 @@ app.post("/register", (req, res) => {
             hash
         )
             .then(results => {
-                // req.session = {};
-                // req.session.user = {};
                 req.session.user_id = results.rows[0].id;
-                // req.session.firstname = req.body.firstname;
-                // req.session.lastname = req.body.lastname;
-                // req.session.user.email = req.body.email;
-
                 res.redirect("/profile");
             })
             .catch(err => console.log(err));
@@ -218,17 +212,27 @@ app.get("/signers/:city", checkForRegisteredUsers, (req, res) => {
 app.get("/thankyou", (req, res) => {
     let signImg = "";
     console.log(req.session.user_id);
-    db.getSignatureImg(req.session.user_id).then(results => {
-        signImg = results.rows[0].signature_url;
-        console.log(results);
-        res.render("thankyou", {
-            layout: "main",
-            message: "Thank you for signing my petition!",
-            signed: signImg
+    db.getSignatureImg(req.session.user_id)
+        .then(results => {
+            signImg = results.rows[0].signature_url;
+            console.log(results);
+        })
+        .then(() => {
+            return db.getUsersNumbers();
+        })
+        .then(signNum => {
+            console.log(signNum);
+            res.render("thankyou", {
+                layout: "main",
+                message: "Thank you for signing my petition!",
+                signersCount: signNum.rows[0].count,
+                signed: signImg
+            });
+        })
+        .catch(err => {
+            console.log(err);
         });
-    });
 });
-
 ///////////////////////////////////////////////////////////////////
 /////////////////////// UPDATE PROFILE PAGE ////////////////////////////
 ///////////////////////////////////////////////////////////////////
@@ -251,14 +255,14 @@ app.post("/updateProfiles", (req, res) => {
         db.hashPassword(req.body.password)
             .then(hash => {
                 Promise.all([
-                    db.getPasswordUpdate(
+                    db.updateWithNewPassword(
                         req.session.user_id,
                         req.body.firstname,
                         req.body.lastname,
                         req.body.email,
                         hash
                     ),
-                    db.getUpdatedProfile(
+                    db.updateWithNewProfile(
                         req.session.user_id,
                         req.body.age,
                         req.body.city,
@@ -277,28 +281,28 @@ app.post("/updateProfiles", (req, res) => {
             });
     } else {
         Promise.all([
-            db.getEditedProfile(
+            db.updateAccountInformation(
                 req.session.user_id,
                 req.body.firstname,
                 req.body.lastname,
                 req.body.email
             ),
             db
-                .getUpdatedProfile(
+                .updateWithNewProfile(
                     req.session.user_id,
                     req.body.age,
                     req.body.city,
                     req.body.url
                 )
                 .catch(err => {
-                    console.log(err, 1);
+                    console.log(err);
                 })
         ])
             .then(() => {
                 res.redirect("/thankyou");
             })
             .catch(err => {
-                console.log(err, 2);
+                console.log(err);
             });
     }
 });
@@ -314,7 +318,7 @@ app.get("/logout", (req, res) => {
 });
 
 ///////////////////////////////////////////////////////////////////
-/////////////////////// LOG OUT ///////////////////////////////////
+/////////////////////// DELETE SIGNATURE AND PROFILE ///////////////////////////////////
 ///////////////////////////////////////////////////////////////////
 
 app.get("/deleteSignature", checkForRegisteredUsers, (req, res) => {

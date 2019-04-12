@@ -2,6 +2,18 @@
     <h2 id="thankYou">{{ message }}</h2>
     <img id="signImg" src="{{signed}}" alt="signature">
     <p>
-        <a id="thanks" href="/signers">In case you wonder who else signed it, see all signers here:</a>
+        <a id="thanks" href="/signers">In case you wonder who else signed it, see all {{signersCount}} signers here:</a>
     </p>
+</div>
+<div>
+    <form action="/logout">
+        <input type="submit" value="Logout" />
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">`
+    </form>
+</div>
+<div>
+    <form id="deleteSign" action="/deleteSignature" method="post">
+            <button id="withdrawSign">Withdraw Your Signature</button>
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        </form>
 </div>

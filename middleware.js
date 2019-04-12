@@ -21,7 +21,6 @@ function registeredProfile(req, res, next) {
 }
 
 function checkIfRegistered(req, res, next) {
-    console.log("made it here");
     console.log(req.session.sigId);
     if (req.session.sigId) {
         res.redirect("/thankyou");

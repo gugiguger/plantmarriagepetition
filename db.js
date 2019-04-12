@@ -140,19 +140,19 @@ exports.mergingTables = function(id) {
         });
 };
 
-exports.getPasswordUpdate = function(id, firstname, lastname, email, hashedPw) {
+exports.updateWithNewPassword = function(id, firstname, lastname, email, hashedPw) {
     let q = `UPDATE users SET firstname = $1, lastname = $2, email = $3, password = $4 WHERE id = $5`;
     let params = [firstname, lastname, email, hashedPw, id];
     return db.query(q, params);
 };
 
-exports.getUpdatedProfile = function(id, age, city, url) {
+exports.updateWithNewProfile = function(id, age, city, url) {
     let q = `INSERT INTO user_profiles (user_id, age, city, url) VALUES ($1, $2, $3, $4) ON CONFLICT (user_id) DO UPDATE SET age = $1, city =$2, url = $3`;
     let params = [id || null, age || null, city || null, url || null];
     return db.query(q, params);
 };
 
-exports.getEditedProfile = function(id, firstname, lastname, email) {
+exports.updateAccountInformation = function(id, firstname, lastname, email) {
     let q = `UPDATE users SET firstname = $1, lastname = $2, email = $3 WHERE id = $4`;
     let params = [firstname, lastname, email, id];
     return db.query(q, params);
@@ -175,4 +175,10 @@ exports.deleteProfile = function(id) {
         db.query(q2, params),
         db.query(q3, params)
     ]);
+};
+
+exports.getUsersNumbers = function() {
+    let q = `SELECT COUNT(*) FROM signatures`;
+    let params = [];
+    return db.query(q, params);
 };
