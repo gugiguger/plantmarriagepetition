@@ -1,6 +1,9 @@
 var spicedPg = require("spiced-pg");
 
-var db = spicedPg("postgres:postgres:postgres@localhost:5432/petition");
+var db = spicedPg(
+    process.env.DATABASE_URL ||
+        "postgres:postgres:postgres@localhost:5432/petition"
+);
 
 const bcrypt = require("bcryptjs");
 
@@ -140,7 +143,13 @@ exports.mergingTables = function(id) {
         });
 };
 
-exports.updateWithNewPassword = function(id, firstname, lastname, email, hashedPw) {
+exports.updateWithNewPassword = function(
+    id,
+    firstname,
+    lastname,
+    email,
+    hashedPw
+) {
     let q = `UPDATE users SET firstname = $1, lastname = $2, email = $3, password = $4 WHERE id = $5`;
     let params = [firstname, lastname, email, hashedPw, id];
     return db.query(q, params);

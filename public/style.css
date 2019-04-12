@@ -16,10 +16,12 @@ body {
 
 .left {
     background-color: red;
-    height: 200px;
+    width: 50%;
+    height: 400px;
 }
 
 .right {
     background-color: green;
-    height: 200px;
+    height: 400px;
+    width: 50%;
 }
