@@ -7,11 +7,11 @@ const cookieSession = require("cookie-session");
 const csurf = require("csurf");
 
 const {
-    checkForRegisteredUsers,
-    checkIfRegistered,
-    registeredProfile
+    requireLoggedInUser,
+    requireLoggedOutUser,
+    requireSignature,
+    requireNoSignature
 } = require("./middleware");
-
 // handlebars
 app.engine("handlebars", hb());
 app.set("view engine", "handlebars");
@@ -42,13 +42,13 @@ app.use(function(req, res, next) {
 /////////////////////// REDIRECT PAGE TO REGISTRATION ////////////////////////////
 ///////////////////////////////////////////////////////////////////
 
-app.get("/", (req, res) => res.redirect("/register"));
+app.get("/", (req, res) => res.redirect("/login"));
 
 ///////////////////////////////////////////////////////////////////
 /////////////////////// REGISTER PAGE ////////////////////////////
 ///////////////////////////////////////////////////////////////////
 
-app.get("/register", checkIfRegistered, (req, res) => {
+app.get("/register", requireLoggedOutUser, (req, res) => {
     res.render("register", {
         layout: "main"
     });
@@ -67,7 +67,12 @@ app.post("/register", (req, res) => {
                 req.session.user_id = results.rows[0].id;
                 res.redirect("/profile");
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                res.render("register", {
+                    layout: "main",
+                    error: "This email has already been used. Use another one."
+                });
+            });
     });
 });
 
@@ -75,7 +80,7 @@ app.post("/register", (req, res) => {
 /////////////////////// LOGIN PAGE ////////////////////////////
 ///////////////////////////////////////////////////////////////////
 
-app.get("/login", checkIfRegistered, (req, res) => {
+app.get("/login", requireLoggedOutUser, (req, res) => {
     res.render("login", {
         layout: "main",
         email: "e-mail address"
@@ -91,10 +96,6 @@ app.post("/login", (req, res) => {
             if (doesMatch) {
                 return db.checkForUserInfos(req.body.email);
             } else {
-                res.render("login", {
-                    layout: "main",
-                    error: "error"
-                });
                 return;
             }
         })
@@ -106,7 +107,10 @@ app.post("/login", (req, res) => {
             res.redirect("/thankyou");
         })
         .catch(err => {
-            console.log(err);
+            res.render("login", {
+                layout: "main",
+                error: "Invalid email or password. Please try again."
+            });
         });
 });
 
@@ -114,7 +118,7 @@ app.post("/login", (req, res) => {
 /////////////////////// PROFILE PAGE ////////////////////////////
 ///////////////////////////////////////////////////////////////////
 
-app.get("/profile", registeredProfile, (req, res) => {
+app.get("/profile", requireLoggedInUser, (req, res) => {
     res.render("profile", {
         layout: "main",
         age: "age",
@@ -141,7 +145,7 @@ app.post("/profile", (req, res) => {
 /////////////////////// PETITION PAGE ////////////////////////////
 ///////////////////////////////////////////////////////////////////
 
-app.get("/petition", checkIfRegistered, (req, res) => {
+app.get("/petition", requireLoggedInUser, requireNoSignature, (req, res) => {
     res.render("petition", {
         layout: "main"
     });
@@ -165,7 +169,7 @@ app.post("/petition", (req, res) => {
 /////////////////////// SIGNERS PAGE ////////////////////////////
 ///////////////////////////////////////////////////////////////////
 
-app.get("/signers", checkForRegisteredUsers, (req, res) => {
+app.get("/signers", requireLoggedInUser, (req, res) => {
     if (!req.session.user_id) {
         console.log(req.session.user_Id);
         res.redirect("/petition");
@@ -188,8 +192,7 @@ app.get("/signers", checkForRegisteredUsers, (req, res) => {
             });
     }
 });
-
-app.get("/signers/:city", checkForRegisteredUsers, (req, res) => {
+app.get("/signers/:city", requireLoggedInUser, (req, res) => {
     db.getSignersInfosFromCity(req.params.city)
         .then(users => {
             res.render("signers", {
@@ -209,7 +212,7 @@ app.get("/signers/:city", checkForRegisteredUsers, (req, res) => {
 /////////////////////// THANK YOU PAGE ////////////////////////////
 ///////////////////////////////////////////////////////////////////
 
-app.get("/thankyou", (req, res) => {
+app.get("/thankyou", requireLoggedInUser, (req, res) => {
     let signImg = "";
     console.log(req.session.user_id);
     db.getSignatureImg(req.session.user_id)
@@ -237,7 +240,7 @@ app.get("/thankyou", (req, res) => {
 /////////////////////// UPDATE PROFILE PAGE ////////////////////////////
 ///////////////////////////////////////////////////////////////////
 
-app.get("/updateProfiles", checkForRegisteredUsers, (req, res) => {
+app.get("/updateProfiles", requireLoggedInUser, (req, res) => {
     db.mergingTables(req.session.user_id)
         .then(update => {
             res.render("updateProfiles", {
@@ -314,14 +317,14 @@ app.post("/updateProfiles", (req, res) => {
 app.get("/logout", (req, res) => {
     req.session.destroy;
     req.session = null;
-    res.redirect("/register");
+    res.redirect("/login");
 });
 
 ///////////////////////////////////////////////////////////////////
 /////////////////////// DELETE SIGNATURE AND PROFILE ///////////////////////////////////
 ///////////////////////////////////////////////////////////////////
 
-app.get("/deleteSignature", checkForRegisteredUsers, (req, res) => {
+app.post("/deleteSignature", requireLoggedInUser, (req, res) => {
     db.deleteSignature(req.session.user_id)
         .then(() => {
             delete req.session.sigId;
@@ -333,7 +336,7 @@ app.get("/deleteSignature", checkForRegisteredUsers, (req, res) => {
         });
 });
 
-app.get("/deleteProfile", checkForRegisteredUsers, (req, res) => {
+app.post("/deleteProfile", requireSignature, (req, res) => {
     db.deleteProfile(req.session.user_id)
         .then(() => {
             delete req.session.sigId;
@@ -345,6 +348,13 @@ app.get("/deleteProfile", checkForRegisteredUsers, (req, res) => {
             console.log(err);
         });
 });
+
+app.get("*", (req, res) => {
+    res.status(404).render("404", {
+        layout: "main"
+    });
+});
+
 ///////////////////////////////////////////////////////////////////
 /////////////////////// LISTEN TO LOCAL HOST 8080 /////////////////
 ///////////////////////////////////////////////////////////////////

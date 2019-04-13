@@ -1,7 +1,8 @@
 <div class="">
     <h2 id="updateProfile">Change your profile information here if you like.</h2>
-{{#update}}
+
     <form method="post">
+        {{#update}}
         <div class="inputFields">
             First Name:<input id="updateFirst" type="text" name="firstname" value="{{firstname}}"/>
             Last Name:<input id="updateLast" type="text" name="lastname" value="{{lastname}}"/>
@@ -18,8 +19,7 @@
             Homepage:<input id="updateHomepage" type="text" name="homepage" value="{{homepage}}"/>
             <button id="updateButton">Update</button>
         </div>
+        {{/update}}
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
     </form>
-{{/update}}
-
 </div>

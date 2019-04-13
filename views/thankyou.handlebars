@@ -1,19 +1,20 @@
-<div>
-    <h2 id="thankYou">{{ message }}</h2>
+<div class="thankyou">
+    <h2 id="thankYou">{{ message }} <a id="thanks" href="/signers">See all {{signersCount}} signees</a></h2>
+
     <img id="signImg" src="{{signed}}" alt="signature">
-    <p>
-        <a id="thanks" href="/signers">In case you wonder who else signed it, see all {{signersCount}} signers here:</a>
-    </p>
+
 </div>
-<div>
+<div id="thankyouButtons">
     <form action="/logout">
-        <input type="submit" value="Logout" />
-        <input type="hidden" name="_csrf" value="{{csrfToken}}">`
+        <input id="logout" type="submit" value="Logout" />
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
     </form>
-</div>
-<div>
     <form id="deleteSign" action="/deleteSignature" method="post">
-            <button id="withdrawSign">Withdraw Your Signature</button>
+            <button id="withdrawSign">Delete Your Signature</button>
             <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        </form>
+    <form action="/updateProfiles">
+        <input id="edit" type="submit" value="Edit Profile" />
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
         </form>
 </div>

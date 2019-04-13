@@ -1,30 +1,34 @@
 module.exports = {
-    checkForRegisteredUsers,
-    registeredProfile,
-    checkIfRegistered
+    requireLoggedInUser,
+    requireLoggedOutUser,
+    requireSignature,
+    requireNoSignature
 };
 
-function checkForRegisteredUsers(req, res, next) {
-    if (!req.session.user_id) {
-        res.redirect("/register");
-    } else {
-        next();
+function requireLoggedInUser(req, res, next) {
+    if (!req.session.user_id && req.url != "/register" && req.url != "/login") {
+        return res.redirect("/register");
     }
+    next();
 }
 
-function registeredProfile(req, res, next) {
-    if (req.session.age || req.session.city || req.session.homepage) {
-        res.redirect("/thankyou");
-    } else {
-        next();
+function requireLoggedOutUser(req, res, next) {
+    if (req.session.user_id) {
+        return res.redirect("/petition");
     }
+    next();
 }
 
-function checkIfRegistered(req, res, next) {
-    console.log(req.session.sigId);
+function requireSignature(req, res, next) {
+    if (!req.session.sigId) {
+        return res.redirect("/petition");
+    }
+    next();
+}
+
+function requireNoSignature(req, res, next) {
     if (req.session.sigId) {
-        res.redirect("/thankyou");
-    } else {
-        next();
+        return res.redirect("/thankyou");
     }
+    next();
 }

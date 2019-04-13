@@ -1,16 +1,14 @@
 <div class="view">
 
-<p id="registerUser">Lets sign folks! </p>
-
-    <form method="post">
-        First Name:<input id="regFirName" placeholder="firstname" class="firstName" type="text" name="firstname" ><br />
-        Last Name: <input id="reglasName" placeholder="lastname"class="lastName" type="text" name="lastname"><br />
-        E-Mail: <input id="regEMail" placeholder="email" class="email" type="email" name="email"><br />
-        Password: <input id="regPasWord"placeholder="password" class="pw" type="password" name="password"><br />
+<p id="registerUser">Register yourself!</p>
+<p>{{error}}</p>
+    <form id="registration" method="post">
+        First Name:<input id="regFirName" placeholder="firstname" class="firstName" type="text" name="firstname" required><br />
+        Last Name: <input id="regLastName" placeholder="lastname"class="lastName" type="text" name="lastname" required><br />
+        E-Mail: <input id="regEmail" placeholder="email" class="email" type="email" name="email" required><br />
+        Password: <input id="regPassword"placeholder="password" class="pw" type="password" name="password" required><br />
         <button id="signUp">Submit</button>
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
     </form>
-
-    <p id="registerUserLink">If you have already signed this petition, please proceed with <a href="/login">log in</a>.</p>
-
+    <p>Back to <a href="/login">login</a> page.</p>
 </div>
