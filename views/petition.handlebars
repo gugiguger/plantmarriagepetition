@@ -1,14 +1,19 @@
 <div class="view">
-<p id="registerUser">Sign here!</p>
+    <div class="regMessage">
+        <h3>Love is love.</h3>
+        <h3>Make plants marriage legal today!</h3>
+    </div>
+    <div class="sigContainer">
+        <p id="signtext">Sign here!</p>
+        <form method="post">
 
-    <form method="post">
-        <input id="sign" type="hidden" name="signature" value="">
-        <div id="sketch">
-            <canvas id="paint" width= "500px" height = "65px">Sign Here</canvas>
-        </div>
-        <button id="submitSign">Submit</button>
-        <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    </form>
+            <input id="sign" type="hidden" name="signature" value="">
+            <div id="sketch">
+                <canvas id="paint" width= "780px" height = "200px">Sign Here</canvas>
+            </div>
+            <button id="submitSign">Submit</button>
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        </form>
 
-
+    </div>
 </div>

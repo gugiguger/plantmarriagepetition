@@ -1,29 +1,27 @@
-<div id="signers">
-
+<div class="view">
     <p id="signersmessage">WE JUST SIGNED AND ITS COOL</p>
-<a href="/thankyou">Back</a>
-<p>{{message}}</p>
-<ul>
+    <a href="/thankyou">Back</a>
+    <ul>
     {{#each signaturelist}}
-    {{#if url}}
+        {{#if url}}
 
-    <p>
-        <a href="{{url}}">
-        <span class="names">{{firstname}} {{lastname}}</span></a>
-        <span class="age">{{age}}</span>
-        <a href="/signers/{{city}}">
-        <span class="city">{{ city}}</span></a>
-    </p>
+            <p class="signersList">
+                <a href="{{url}}">
+                <span class="names">{{firstname}} {{lastname}}</span></a>
+                <span class="age">{{age}}</span>
+                <a href="/signers/{{city}}">
+                <span class="city">{{ city}}</span></a>
+            </p>
 
-    {{else}}
+        {{else}}
 
-    <p>
-        <span class="names">{{firstname}} {{lastname}}</span>
-        <span class="age">{{age}}</span>
-        <a href="/signers/{{city}}">{{city}}</a>
-    </p>
+            <p class="signersList">
+                <span class="names">{{firstname}} {{lastname}}</span>
+                <span class="age">{{age}}</span>
+                <a href="/signers/{{city}}">{{city}}</a>
+            </p>
 
-    {{/if}}
+        {{/if}}
     {{/each}}
-</ul>
+    </ul>
 </div>

@@ -1,20 +1,25 @@
-<div class="thankyou">
-    <h2 id="thankYou">{{ message }} <a id="thanks" href="/signers">See all {{signersCount}} signees</a></h2>
-
-    <img id="signImg" src="{{signed}}" alt="signature">
-
-</div>
-<div id="thankyouButtons">
-    <form action="/logout">
-        <input id="logout" type="submit" value="Logout" />
-        <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    </form>
-    <form id="deleteSign" action="/deleteSignature" method="post">
+<div class="view">
+    <div class="regMessage">
+        <h3>Love is love.</h3>
+        <h3>Make plants marriage legal today!</h3>
+    </div>
+    <div class="thankyou">
+        <h2 id="thankYou">{{ message }}</h2>
+        <img id="signImg" src="{{signed}}" alt="signature">
+    </div>
+    <div id="thankyouButtons">
+        <form action="/logout">
+            <input id="logout" type="submit" value="Logout" />
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        </form>
+        <form id="deleteSign" action="/deleteSignature" method="post">
             <button id="withdrawSign">Delete Your Signature</button>
             <input type="hidden" name="_csrf" value="{{csrfToken}}">
         </form>
-    <form action="/updateProfiles">
-        <input id="edit" type="submit" value="Edit Profile" />
-        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        <form action="/updateProfiles">
+            <input id="edit" type="submit" value="Edit Profile" />
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
         </form>
+    </div>
+    <a id="thanks" href="/signers">See all {{signersCount}} signees</a><br>
 </div>

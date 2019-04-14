@@ -22,7 +22,7 @@ canvas.addEventListener(
 ctx.lineWidth = 3;
 ctx.lineJoin = "round";
 ctx.lineCap = "round";
-ctx.strokeStyle = "black";
+ctx.strokeStyle = "#ebf222";
 
 canvas.addEventListener(
     "mousedown",

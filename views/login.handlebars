@@ -1,13 +1,21 @@
+{{>petitionMessage}}
 <div class="login">
+    <div class="logincontainer">
+        <div class="loginbox">
+            <p id="logintext">Please log in here</p>
+            <form id="loginField" method="post">
+                <input  id="email" type="email" placeholder="email" name="email" required><br />
+                <input id="pw" type="password" placeholder="password" name="password" required><br />
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                <button id="logIn">Submit</button>
+            </form>
+            <p class="logerror">{{error}}</p>
+        </div>
+        <div class="registerbox">
+            <p>If you have not registered yet <br> then you can..</p>
+            <a href="/register"><img src="/images/Star.png" alt=""></a>
+        </div>
+    </div>
 
-    <h2>Please log in here.</h2>
-    <p>{{error}}</p>
-    <form id="loginField" method="post">
 
-        E-Mail:<input  id="email" type="email" placeholder="email" name="email" required><br />
-        Password:<input id="pw" type="password" placeholder="password" name="password" required><br />
-        <input type="hidden" name="_csrf" value="{{csrfToken}}">
-        <button id="logIn">Submit</button>
-        <p>If you have not registered yet then you can register <a href="/register">here</a> </p>
-    </form>
 </div>

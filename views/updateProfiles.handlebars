@@ -1,23 +1,45 @@
-<div class="">
+<div class="view">
     <h2 id="updateProfile">Change your profile information here if you like.</h2>
 
     <form method="post">
         {{#update}}
-        <div class="inputFields">
-            First Name:<input id="updateFirst" type="text" name="firstname" value="{{firstname}}"/>
-            Last Name:<input id="updateLast" type="text" name="lastname" value="{{lastname}}"/>
+        <div class="updateContainer">
+            <div>
+                <p>First Name:</p>
+                <input id="updateFirst" type="text" name="firstname" value="{{firstname}}"/>
+            </div>
+            <div>
+                <p>Last Name:</p>
+                <input id="updateLast" type="text" name="lastname" value="{{lastname}}"/>
+            </div>
         </div>
-        <div class="inputFields">
-            E-Mail:<input id="updateEmail" type="email" name="email" value="{{email}}"/>
-            Password:<input id="updatePw" type="password" value="" name="password"/>
+        <div class="updateContainer">
+            <div>
+                <p>E-Mail:</p>
+                <input id="updateEmail" type="email" name="email" value="{{email}}"/>
+            </div>
+            <div>
+                <p>Password:</p>
+                <input id="updatePw" type="password" value="" name="password"/>
+            </div>
+
         </div>
-        <div class="inputFields">
-            Age:<input id="updateAge" type="text" name="age" value="{{age}}"/>
-            City:<input id="updateCity" type="text" name="city" value="{{city}}"/>
+        <div class="updateContainer">
+            <div>
+                <p>Age:</p>
+                <input id="updateAge" type="text" name="age" value="{{age}}"/>
+            </div>
+            <div>
+                <p>City:</p>
+                <input id="updateCity" type="text" name="city" value="{{city}}"/>
+            </div>
         </div>
-        <div class="inputFields">
-            Homepage:<input id="updateHomepage" type="text" name="homepage" value="{{homepage}}"/>
-            <button id="updateButton">Update</button>
+        <div class="updateContainer">
+            <div>
+                <p>Homepage:</p>
+                <input id="updateHomepage" type="text" name="homepage" value="{{homepage}}"/>
+            </div>
+            <button id="updateButton"><img id="updateImg" src="/images/Update.png" alt=""></button>
         </div>
         {{/update}}
         <input type="hidden" name="_csrf" value="{{csrfToken}}">

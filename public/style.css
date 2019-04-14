@@ -1,26 +1,21 @@
 body {
     margin: 0;
-    font-family: "Fjalla One", sans-serif;
-    /* color: white; */
+    font-family: "Quicksand", sans-serif;
+    color: #ebf222;
 }
 
 h1 {
     margin-left: 20px;
-    font-size: 100px;
+    font-size: 120px;
     padding: 0;
     line-height: 0.2;
 }
 
 h3 {
     margin: 0 20px 0 20px;
-    text-align: justify;
-    line-height: 2;
-    font-size: 24px;
-}
-#sketch {
-    background-color: white;
-    width: 500px;
-    height: 65px;
+    text-align: left;
+    line-height: 1.3;
+    font-size: 40px;
 }
 
 .container {
@@ -30,7 +25,7 @@ h3 {
 }
 
 .left {
-    background-color: #fd3552;
+    background-color: #be8fbf;
     width: 50%;
     height: 100vh;
     display: flex;
@@ -62,84 +57,8 @@ h3 {
     line-height: 2;
 }
 
-#logIn,
-#signUp,
-#logout,
-#edit,
-#withdrawSign {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-    margin: 10px;
-    font-family: "Fjalla One", sans-serif;
-    font-size: 20px;
-    width: 80px;
-    height: 80px;
-    background: #fff;
-    padding: 10px;
-    border: 0;
-    outline: 0;
-    border-radius: 50%;
-    color: #171717;
-    transition: all 200ms;
-}
-
-#email,
-#pw,
-#regFirName,
-#regLastName,
-#regEmail,
-#regPassword,
-#updateFirst,
-#updateLast,
-#updateAge,
-#updateCity,
-#updatePw,
-#updateEmail,
-#updateHomepage {
-    margin: 5px;
-    width: 90%;
-    padding: 12px 24px;
-    background-color: transparent;
-    font-size: 14px;
-    line-height: 18px;
-    border-radius: 50px;
-    border: 1px solid #575756;
-}
-
-.view,
-.thankyou,
-.inputFields,
-#updateProfile {
-    margin: 15px 20px 0 20px;
-}
-
 #registerUser {
     font-size: 22px;
-}
-
-#thankyouButtons {
-    display: flex;
-    justify-content: center;
-}
-
-#logout,
-#edit,
-#withdrawSign,
-#updateButton {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-    margin: 10px;
-    font-family: "Fjalla One", sans-serif;
-    font-size: 20px;
-    width: 105px;
-    height: 105px;
-    background: #fff;
-    padding: 10px;
-    border: 0;
-    outline: 0;
-    border-radius: 50%;
 }
 
 #signImg {
@@ -154,4 +73,232 @@ h3 {
 
 #signersmessage {
     font-size: 24px;
+}
+
+#thanks {
+    margin-left: 40px;
+    font-size: 24px;
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+}
+
+.logincontainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+}
+
+#logintext {
+    font-size: 24px;
+}
+
+.logerror {
+    font-weight: bold;
+    font-size: 18px;
+    color: #861705;
+    margin-left: 20px;
+}
+.registerbox {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.registerbox p {
+    font-size: 24px;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.registerbox img {
+    width: 40%;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+#email,
+#pw {
+    margin: 5px;
+    width: 200px;
+    padding: 12px 24px;
+    background-color: #ebf222;
+    font-size: 14px;
+    line-height: 18px;
+    text-transform: capitalize;
+}
+
+#logIn {
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: "Quicksand", sans-serif;
+    position: relative;
+    left: 20%;
+    margin-top: 20px;
+    margin-left: 20px;
+    transform: translate(-80%);
+    font-size: 20px;
+    background-color: transparent;
+    border: 0;
+    outline: 0;
+    color: #ebf222;
+}
+
+#regFirName,
+#regLastName,
+#regEmail,
+#regPassword {
+    margin: 5px;
+    width: 40%;
+    height: 50px;
+    padding: 12px 24px;
+    background-color: #ebf222;
+    font-size: 20px;
+    line-height: 18px;
+    border-radius: 0;
+    text-transform: capitalize;
+}
+
+.regbox {
+    margin: 40px 20px 20px 20px;
+}
+
+#signUp {
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: "Quicksand", sans-serif;
+    margin: 20px 0 20px 0;
+    font-size: 20px;
+    background-color: transparent;
+    border: 0;
+    outline: 0;
+    color: #ebf222;
+}
+
+.profile {
+    margin: 20px 20px 20px 20px;
+}
+
+.profile h3 {
+    margin: 0 0 40px 0;
+}
+#regAge,
+#regCity,
+#regHomepage {
+    margin: 5px;
+    width: 40%;
+    height: 50px;
+    padding: 12px 24px;
+    background-color: #ebf222;
+    font-size: 20px;
+    line-height: 18px;
+    border-radius: 0;
+    text-transform: capitalize;
+}
+
+#continue {
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: "Quicksand", sans-serif;
+    margin: 20px 0 20px 0;
+    font-size: 20px;
+    background-color: transparent;
+    border: 0;
+    outline: 0;
+    color: #ebf222;
+}
+
+.sigContainer,
+.thankyou {
+    margin: 100px 0 0 20px;
+}
+#signtext {
+    font-size: 40px;
+}
+
+#sketch {
+    background-color: white;
+    width: 780px;
+    height: 200px;
+}
+
+#submitSign {
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: "Quicksand", sans-serif;
+    margin: 20px 0 20px 0;
+    font-size: 20px;
+    background-color: transparent;
+    border: 0;
+    outline: 0;
+    color: #ebf222;
+}
+
+#thankyouButtons {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 40px;
+}
+
+#logout,
+#edit,
+#withdrawSign {
+    cursor: pointer;
+    font-family: "Quicksand", sans-serif;
+    margin: 20px 0 20px 0;
+    font-size: 30px;
+    background-color: transparent;
+    border: 0;
+    outline: 0;
+    color: #ebf222;
+}
+
+#updateFirst,
+#updateLast,
+#updateAge,
+#updateCity,
+#updatePw,
+#updateEmail,
+#updateHomepage {
+    margin: -10px 35px 5px 0;
+    width: 300px;
+    height: 50px;
+    padding: 12px 24px;
+    background-color: #ebf222;
+    font-size: 20px;
+    text-transform: capitalize;
+}
+.view,
+.thankyou {
+    margin: 15px 20px 0 20px;
+}
+
+.updateContainer {
+    display: flex;
+}
+
+#updateButton {
+    cursor: pointer;
+    font-family: "Quicksand", sans-serif;
+    margin: 20px 0 20px 0;
+    font-size: 30px;
+    background-color: transparent;
+    border: 0;
+    outline: 0;
+    color: #ebf222;
+    width: 40%;
+}
+
+#updateImg {
+    width: 40%;
+}
+
+.signersList {
+    font-size: 22px;
+    text-decoration: none;
 }

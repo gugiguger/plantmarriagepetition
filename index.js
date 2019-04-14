@@ -70,7 +70,7 @@ app.post("/register", (req, res) => {
             .catch(err => {
                 res.render("register", {
                     layout: "main",
-                    error: "This email has already been used. Use another one."
+                    error: "*This email has already been used. Use another one."
                 });
             });
     });
@@ -109,7 +109,7 @@ app.post("/login", (req, res) => {
         .catch(err => {
             res.render("login", {
                 layout: "main",
-                error: "Invalid email or password. Please try again."
+                error: "*Invalid email or password. Please try again."
             });
         });
 });
@@ -347,12 +347,6 @@ app.post("/deleteProfile", requireSignature, (req, res) => {
         .catch(err => {
             console.log(err);
         });
-});
-
-app.get("*", (req, res) => {
-    res.status(404).render("404", {
-        layout: "main"
-    });
 });
 
 ///////////////////////////////////////////////////////////////////

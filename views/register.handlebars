@@ -1,14 +1,20 @@
 <div class="view">
+    <div class="regMessage">
+        <h3>Love is love.</h3>
+        <h3>Make plants marriage legal today!</h3>
+    </div>
 
-<p id="registerUser">Register yourself!</p>
-<p>{{error}}</p>
-    <form id="registration" method="post">
-        First Name:<input id="regFirName" placeholder="firstname" class="firstName" type="text" name="firstname" required><br />
-        Last Name: <input id="regLastName" placeholder="lastname"class="lastName" type="text" name="lastname" required><br />
-        E-Mail: <input id="regEmail" placeholder="email" class="email" type="email" name="email" required><br />
-        Password: <input id="regPassword"placeholder="password" class="pw" type="password" name="password" required><br />
-        <button id="signUp">Submit</button>
-        <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    </form>
-    <p>Back to <a href="/login">login</a> page.</p>
+    <p class="logerror">{{error}}</p>
+    <div class="regbox">
+        <p id="registerUser">Register yourself!</p>
+        <form id="registration" method="post">
+            <input id="regFirName" placeholder="firstname" class="firstName" type="text" name="firstname" required><br />
+            <input id="regLastName" placeholder="lastname"class="lastName" type="text" name="lastname" required><br />
+            <input id="regEmail" placeholder="email" class="email" type="email" name="email" required><br />
+            <input id="regPassword"placeholder="password" class="pw" type="password" name="password" required><br />
+            <button id="signUp">Submit</button>
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        </form>
+        <p>Back to <a href="/login">login</a> page.</p>
+    </div>
 </div>
