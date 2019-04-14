@@ -220,7 +220,7 @@ h3 {
 
 #sketch {
     background-color: white;
-    width: 430px;
+    width: 500px;
     height: 200px;
 }
 
@@ -264,7 +264,7 @@ h3 {
 #updateEmail,
 #updateHomepage {
     margin: -10px 35px 5px 0;
-    width: 250px;
+    width: 75%;
     height: 30px;
     padding: 12px 24px;
     background-color: #ebf222;
