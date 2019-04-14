@@ -336,7 +336,7 @@ app.post("/deleteSignature", requireLoggedInUser, (req, res) => {
         });
 });
 
-// app.post("/deleteProfile", requireSignature, (req, res) => {
+// app.get("/deleteProfile", requireSignature, (req, res) => {
 //     db.deleteProfile(req.session.user_id)
 //         .then(() => {
 //             delete req.session.sigId;
