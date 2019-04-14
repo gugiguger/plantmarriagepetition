@@ -46,7 +46,7 @@ h3 {
 }
 
 .gif {
-    object-fit: fill;
+    object-fit: cover;
     width: 420px;
     height: 550px;
     background-image: url("/images/Webp.net-gifmaker.gif");
