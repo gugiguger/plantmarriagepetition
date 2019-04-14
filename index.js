@@ -336,18 +336,18 @@ app.post("/deleteSignature", requireLoggedInUser, (req, res) => {
         });
 });
 
-app.post("/deleteProfile", requireSignature, (req, res) => {
-    db.deleteProfile(req.session.user_id)
-        .then(() => {
-            delete req.session.sigId;
-            delete req.body.signature;
-            delete req.session.user_id;
-            res.redirect("/register");
-        })
-        .catch(err => {
-            console.log(err);
-        });
-});
+// app.post("/deleteProfile", requireSignature, (req, res) => {
+//     db.deleteProfile(req.session.user_id)
+//         .then(() => {
+//             delete req.session.sigId;
+//             delete req.body.signature;
+//             delete req.session.user_id;
+//             res.redirect("/register");
+//         })
+//         .catch(err => {
+//             console.log(err);
+//         });
+// });
 
 ///////////////////////////////////////////////////////////////////
 /////////////////////// LISTEN TO LOCAL HOST 8080 /////////////////
